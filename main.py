@@ -20,7 +20,7 @@ conexao = mysql.connector.connect(
 cursor = conexao.cursor()
 
 """
-select r.id, r.plate, r.date_entry, r.status_delivery, r.status_deliveryman, u.name, u.tower, u.apartment from registers r join users u on r.user_id = u.id where r.status_deliveryman in (1, 2);
+select r.id, r.plate, r.date_entry, r.status_delivery, r.status_deliveryman, u.name, u.tower, u.apartment from registers r join users u on r.user_id = u.id where r.status_deliveryman in (1, 2) order by r.status_deliveryman;
 """
 
 @eel.expose
@@ -40,6 +40,11 @@ def disconnect():
     print(f'Desconectou com sucesso')
 
 @eel.expose
+def send_command(id):
+    global conSerial
+    print(f'Passou em sendcommand: {id}')
+
+@eel.expose
 def get_registers():
     global cursor
     registers = []
@@ -47,7 +52,8 @@ def get_registers():
     cursor.execute("""
     select r.id, r.plate, r.date_entry, r.status_delivery, r.status_deliveryman, u.name, u.tower, u.apartment 
     from registers r join users u on r.user_id = u.id 
-    where r.status_deliveryman in (1, 2)
+    where r.status_deliveryman in (1, 2) 
+    order by r.status_deliveryman
     """)
 
     for r in cursor.fetchall():

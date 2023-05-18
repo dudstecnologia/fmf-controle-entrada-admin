@@ -1,3 +1,5 @@
+var connection = false
+
 setInterval(() => { getRegisters() }, 2000)
 
 eel.get_ports()(ports => {
@@ -21,12 +23,27 @@ function getRegisters() {
             let apartamento = row.insertCell(2);
             let placa = row.insertCell(3);
             let data = row.insertCell(4);
+            let action = row.insertCell(5);
+
+            const btnSendCommand = document.createElement('button');
+            btnSendCommand.innerHTML = 'Liberar';
+            btnSendCommand.className = 'btn btn-sm btn-success';
+
+            btnSendCommand.onclick = function() {
+                sendCommand(register.id);
+            };
 
             morador.innerHTML = register.name;
             torre.innerHTML = register.tower;
             apartamento.innerHTML = register.apartment;
             placa.innerHTML = register.plate;
             data.innerHTML = register.date_entry;
+
+            if (register.status_deliveryman == 1) {
+                action.appendChild(btnSendCommand);
+            } else {
+                action.innerHTML = ''
+            }
         })
     })
 }
@@ -49,6 +66,7 @@ $('#formConnection').submit((e) => {
     $('#selectPorts').prop('disabled', true)
     $('#btnConnect').prop('disabled', true)
     $('#btnDisconnect').prop('disabled', false)
+    connection = true
 })
 
 $("#btnDisconnect").click(() => {
@@ -57,4 +75,11 @@ $("#btnDisconnect").click(() => {
     $('#selectPorts').prop('disabled', false)
     $('#btnDisconnect').prop('disabled', true)
     $('#btnConnect').prop('disabled', false)
+    connection = false
 });
+
+function sendCommand(id) {
+    if (connection) {
+        eel.send_command(id)
+    }
+}
