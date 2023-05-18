@@ -44,5 +44,17 @@ $('#formConnection').submit((e) => {
         return false
     }
 
-    console.log(port)
+    eel.connection(port)
+
+    $('#selectPorts').prop('disabled', true)
+    $('#btnConnect').prop('disabled', true)
+    $('#btnDisconnect').prop('disabled', false)
 })
+
+$("#btnDisconnect").click(() => {
+    eel.disconnect()
+
+    $('#selectPorts').prop('disabled', false)
+    $('#btnDisconnect').prop('disabled', true)
+    $('#btnConnect').prop('disabled', false)
+});
