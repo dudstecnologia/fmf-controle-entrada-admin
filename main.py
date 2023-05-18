@@ -1,5 +1,13 @@
 import eel
+import serial
 import mysql.connector
+import serial.tools.list_ports
+
+ports = []
+portsSerial = serial.tools.list_ports.comports()
+
+for port, desc, hwid in sorted(portsSerial):
+        ports.append({ "port": port, "description": desc })
 
 conexao = mysql.connector.connect(
     host='localhost',
@@ -13,6 +21,10 @@ cursor = conexao.cursor()
 """
 select r.id, r.plate, r.date_entry, r.status_delivery, r.status_deliveryman, u.name, u.tower, u.apartment from registers r join users u on r.user_id = u.id where r.status_deliveryman in (1, 2);
 """
+
+@eel.expose
+def get_ports():
+    return ports
 
 @eel.expose
 def get_registers():

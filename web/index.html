@@ -11,6 +11,21 @@
 </head>
 <body>
     <div class="container-fluid">
+        <div class="mt-3 mb-3">
+            <form id="formConnection">
+                <div class="row">
+                    <div class="col-md-4">
+                        <select class="form-control" id="selectPorts">
+                            <option value="">Selecione a porta serial</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary">Conectar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
         <div class="table-responsive mt-2">
             <table class="table table-striped table-bordered" id="table-registers">
                 <thead>
