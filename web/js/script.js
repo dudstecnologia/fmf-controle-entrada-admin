@@ -30,7 +30,7 @@ function getRegisters() {
             btnSendCommand.className = 'btn btn-sm btn-success';
 
             btnSendCommand.onclick = function() {
-                sendCommand(register.id);
+                open(register.id);
             };
 
             morador.innerHTML = register.name;
@@ -66,6 +66,7 @@ $('#formConnection').submit((e) => {
     $('#selectPorts').prop('disabled', true)
     $('#btnConnect').prop('disabled', true)
     $('#btnDisconnect').prop('disabled', false)
+    $('#btnClose').prop('disabled', false)
     connection = true
 })
 
@@ -75,11 +76,18 @@ $("#btnDisconnect").click(() => {
     $('#selectPorts').prop('disabled', false)
     $('#btnDisconnect').prop('disabled', true)
     $('#btnConnect').prop('disabled', false)
+    $('#btnClose').prop('disabled', true)
     connection = false
-});
+})
 
-function sendCommand(id) {
+$("#btnClose").click(() => {
     if (connection) {
-        eel.send_command(id)
+        eel.close()
+    }
+})
+
+function open(id) {
+    if (connection) {
+        eel.open(id)
     }
 }

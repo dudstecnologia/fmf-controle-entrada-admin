@@ -40,9 +40,14 @@ def disconnect():
     print(f'Desconectou com sucesso')
 
 @eel.expose
-def send_command(id):
+def open(id):
     global conSerial
-    print(f'Passou em sendcommand: {id}')
+    conSerial.write(b'open')
+
+@eel.expose
+def close():
+    global conSerial
+    conSerial.write(b'close')
 
 @eel.expose
 def get_registers():
