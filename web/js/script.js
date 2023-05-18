@@ -37,7 +37,10 @@ $('#formConnection').submit((e) => {
     let port = $('#selectPorts').val()
 
     if (!port) {
-        console.log("Selecione a porta serial")
+        Swal.fire({
+          icon: 'error',
+          text: 'Selecione uma porta serial válida',
+        })
         return false
     }
 
