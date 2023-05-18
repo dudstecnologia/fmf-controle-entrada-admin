@@ -10,14 +10,14 @@ portsSerial = serial.tools.list_ports.comports()
 for port, desc, hwid in sorted(portsSerial):
         ports.append({ "port": port, "description": desc })
 
-conexao = mysql.connector.connect(
+conn_mysql = mysql.connector.connect(
     host='localhost',
     user='root',
     password='',
     database='controle_entrada',
 )
 
-cursor = conexao.cursor()
+cursor = conn_mysql.cursor()
 
 """
 select r.id, r.plate, r.date_entry, r.status_delivery, r.status_deliveryman, u.name, u.tower, u.apartment from registers r join users u on r.user_id = u.id where r.status_deliveryman in (1, 2) order by r.status_deliveryman;
@@ -35,23 +35,21 @@ def connection(port_con):
 
 @eel.expose
 def disconnect():
-    global conSerial
     conSerial.close()
     print(f'Desconectou com sucesso')
 
 @eel.expose
 def open(id):
-    global conSerial
+    cursor.execute(f"UPDATE registers SET status_deliveryman=2 WHERE id = {id}")
+    conn_mysql.commit()
     conSerial.write(b'open')
 
 @eel.expose
 def close():
-    global conSerial
     conSerial.write(b'close')
 
 @eel.expose
 def get_registers():
-    global cursor
     registers = []
 
     cursor.execute("""
