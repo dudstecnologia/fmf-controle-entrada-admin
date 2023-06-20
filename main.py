@@ -72,6 +72,8 @@ def get_registers():
         }
         registers.append(register)
 
+    conn_mysql.commit()
+
     return registers
 
 eel.init('web')
